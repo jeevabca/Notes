@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "jsx": "react", // or "react-jsx" for newer JSX runtimes
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@constants/*": ["src/constants/*"] // Example for module aliases
+    }
+  }
+}
