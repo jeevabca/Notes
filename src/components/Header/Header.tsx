@@ -1,26 +1,62 @@
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {COLORS} from '../../constants/Colors';
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { COLORS } from '../../constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
-import {SCREENS} from '../../constants/ScreenNames';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-type NavigationProp = {
-  navigate: (screen: string) => void;
+
+type HeaderProps = {
+  title: string;
+  titleonly: string[];
+  onSearch: (text: string) => void;
 };
 
-const Header: React.FC<{title: string}> = ({title}) => {
-  const navigation = useNavigation<NavigationProp>();
+const Header: React.FC<HeaderProps> = ({ title, titleonly, onSearch }) => {
+
+  const [searchText, setSearchText] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  console.log("fromt header", titleonly);
+  const handleSearchChange = (text: string) => {
+    setSearchText(text);
+    onSearch(text); // notify parent
+  };
 
   return (
-    <SafeAreaView style={styles.headerContainer}>
-      <Text style={styles.headerText}>{title}</Text>
+    <SafeAreaView>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>{title}</Text>
 
-      <TouchableOpacity
-        style={styles.searchIcon}
-        onPress={() => navigation.navigate(SCREENS.SEARCHNOTESSCREEN)}>
-        <Ionicons name="search" size={20} color={COLORS.WHITE} />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.searchIcon}
+          onPress={() => setIsSearching(prev => !prev)}
+        >
+          <Ionicons name="search" size={20} color={COLORS.WHITE} />
+        </TouchableOpacity>
+      </View>
+
+      {isSearching && (
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search"
+            value={searchText}
+            onChangeText={handleSearchChange}
+            autoFocus
+          />
+
+          {searchText ? (
+            <TouchableOpacity
+              onPress={() => {
+                setSearchText('');
+                onSearch(''); // reset filter
+              }}
+              style={styles.clearButton}
+            >
+              <AntDesign name="closecircle" size={18} color={COLORS.BLACK} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -44,4 +80,23 @@ const styles = StyleSheet.create({
   searchIcon: {
     padding: 5,
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.LIGHT_GREY,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginTop: 8,
+    paddingHorizontal: 10,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 8,
+    color: COLORS.BLACK,
+  },
+  clearButton: {
+    marginLeft: 8,
+  },
+
 });

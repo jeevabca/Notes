@@ -11,18 +11,18 @@ import {
 } from 'react-native';
 import React from 'react';
 import NotesHeader from '../components/Header/NotesHeader';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import useNotesDetailScreen from '../view-controller/useNotesDetailScreenController';
 
 const NotesDetailScreen = () => {
-  const {addNotes, title, setTitle, value, setValue} = useNotesDetailScreen();
+  const { addNotes, title, setTitle, value, setValue } = useNotesDetailScreen();
   return (
     <>
       <NotesHeader title="Notes" />
       <SafeAreaView style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
               <TextInput
@@ -31,7 +31,7 @@ const NotesDetailScreen = () => {
                 placeholder="Title"
                 placeholderTextColor="gray"
                 cursorColor="black"
-                style={{height: 80, fontSize: 20, fontWeight: '300'}}
+                style={{ height: 80, fontSize: 20, fontWeight: '300', backgroundColor: 'white' }}
               />
               <TextInput
                 value={value}
@@ -39,11 +39,11 @@ const NotesDetailScreen = () => {
                 placeholder="Description"
                 cursorColor="black"
                 placeholderTextColor="gray"
-                style={{backgroundColor: 'white', paddingVertical: 3}}
+                style={{ backgroundColor: 'white', paddingVertical: 3 }}
                 multiline
               />
               <TouchableOpacity onPress={addNotes} style={styles.button}>
-                <Text style={{textAlign: 'center', color: 'white'}}>
+                <Text style={{ textAlign: 'center', color: 'white' }}>
                   Save Note
                 </Text>
               </TouchableOpacity>

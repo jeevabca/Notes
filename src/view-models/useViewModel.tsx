@@ -4,6 +4,7 @@ import {
   getNotesItems,
   saveNotesItems,
   updateQuery,
+  getTitle
 } from '../storage/database';
 
 const useViewModel = () => {
@@ -47,11 +48,21 @@ const useViewModel = () => {
     }
   };
 
+  const getTitleOnly = async () => {
+    try {
+      const db = await getDBConnection();
+      return await getTitle(db)
+    } catch (error) {
+      console.error('Error deleting note:', error);
+      throw error;
+    }
+  }
   return {
     getNotes,
     deleteNote,
     updateNote,
     saveNote,
+    getTitleOnly,
   };
 };
 

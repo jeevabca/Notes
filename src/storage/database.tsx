@@ -3,15 +3,15 @@ import {
   SQLiteDatabase,
   enablePromise,
 } from 'react-native-sqlite-storage';
-import {noteItem} from '../storage/type';
-import {Alert} from 'react-native';
+import { noteItem } from '../storage/type';
+import { Alert } from 'react-native';
 
 const tableName = 'notes';
 
 enablePromise(true);
 export const getDBConnection = async () => {
   try {
-    const db = await openDatabase({name: 'notes.db', location: 'default'});
+    const db = await openDatabase({ name: 'notes.db', location: 'default' });
     await createTable(db);
     return db;
   } catch (error) {
@@ -29,7 +29,7 @@ export const createTable = async db => {
 
   try {
     await db.executeSql(query);
-    console.log('Table created successfully.');
+    // console.log('Table created successfully.');
   } catch (error) {
     console.error('Error creating table:', error);
   }
@@ -43,7 +43,7 @@ export const updateQuery = async (
 ) => {
   try {
     const updateQuery = `UPDATE ${tableName} SET title = ?, value = ? WHERE rowid = ?`;
-    console.log('Update successful:', {title, value});
+    // console.log('Update successful:', { title, value });
     db.executeSql(updateQuery, [title, value, id]);
 
     // return db.executeSql(updateQuery, [title, value]);
@@ -103,6 +103,27 @@ export const getNotesItems = async (
     console.error(error);
     throw Error('Failed to get noteItems !!!');
   }
+};
+
+
+export const getTitle = async (db: SQLiteDatabase) => {
+  const titles: string[] = [];
+
+  try {
+    const results = await db.executeSql(`SELECT title FROM ${tableName}`);
+    results.forEach(result => {
+      const len = result.rows.length;
+      for (let i = 0; i < len; i++) {
+        const row = result.rows.item(i);
+        if (row?.title) {
+          titles.push(row.title);
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching titles:', error);
+  }
+  return titles;
 };
 
 export const deleteItem = async (db: SQLiteDatabase, id: number) => {

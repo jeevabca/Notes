@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import {SCREENS} from '../constants/ScreenNames';
+import { SCREENS } from '../constants/ScreenNames';
 import useViewModel from '../view-models/useViewModel';
 
 type RouteParams = {
@@ -25,7 +25,7 @@ const useNotesDetailScreen = () => {
   const [title, setTitle] = useState(initialTitle || '');
   const [value, setValue] = useState(initialValue || '');
 
-  const {saveNote, updateNote} = useViewModel();
+  const { saveNote, updateNote } = useViewModel();
 
   const addNotes = async () => {
     if (!title.trim() || !value.trim()) {
@@ -36,10 +36,10 @@ const useNotesDetailScreen = () => {
     try {
       if (id) {
         await updateNote(id, title, value); // Implement updateNote in ViewModel
-        console.log('Updated:', title, value);
+        // console.log('Updated:', title, value);
       } else {
         await saveNote(title, value); // Implement saveNote in ViewModel
-        console.log('Note saved:', {title, value});
+        // console.log('Note saved:', {title, value});
       }
 
       navigation.navigate(SCREENS.HOMESCREEN);

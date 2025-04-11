@@ -1,6 +1,6 @@
-import {Alert} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import useViewModel from '../view-models/useViewModel';
 
 type NavigationProp = {
@@ -12,7 +12,7 @@ const useHomeScreenController = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp>();
 
-  const {getNotes, deleteNote} = useViewModel();
+  const { getNotes, deleteNote, getTitleOnly } = useViewModel();
 
   const loadNotes = async () => {
     try {
@@ -31,7 +31,7 @@ const useHomeScreenController = () => {
 
   const confirmDelete = (id: number) => {
     Alert.alert('Delete Note', 'Are you sure you want to delete this note?', [
-      {text: 'Cancel', style: 'cancel'},
+      { text: 'Cancel', style: 'cancel' },
       {
         text: 'Delete',
         style: 'destructive',
@@ -54,6 +54,7 @@ const useHomeScreenController = () => {
     loadNotes,
     notes,
     navigation,
+    getTitleOnly
   };
 };
 

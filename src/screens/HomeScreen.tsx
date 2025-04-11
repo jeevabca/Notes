@@ -1,25 +1,46 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header/Header';
 import AddItem from '../components/AddItem/AddItem';
-import {FlatList} from 'react-native-gesture-handler';
-import {limitToWords} from '../helper/helper';
+import { FlatList } from 'react-native-gesture-handler';
+import { limitToWords } from '../helper/helper';
 import useHomeScreenController from '../view-controller/useHomeScreenController';
-import {SCREENS} from '../constants/ScreenNames';
-import {COLORS} from '../constants/Colors';
+import { SCREENS } from '../constants/ScreenNames';
+import { COLORS } from '../constants/Colors';
+import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = () => {
-  const {confirmDelete, notes, navigation} = useHomeScreenController();
+  const isFocused = useIsFocused();
+  const [titonly, setTitOnly] = useState([])
+  const [searchText, setSearchText] = useState('');
+  const { confirmDelete, notes, navigation, getTitleOnly } = useHomeScreenController();
+
+
+  const gettit = async () => {
+    const gettit = await getTitleOnly();
+    setTitOnly(gettit)
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      gettit();
+    }
+  }, [isFocused]);
+
+  const filteredNotes = notes.filter(note =>
+    note.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      <Header title="Notebooks" />
+      <Header title="Notebooks" titleonly={titonly} onSearch={setSearchText} />
       <AddItem />
       <FlatList
-        data={notes}
+        data={filteredNotes}
         keyExtractor={item => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.noteItem}
             onPress={() =>
@@ -43,19 +64,19 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 140,
+    flex: 1
   },
   noteItem: {
     flex: 1,
     padding: 10,
     marginVertical: 5,
-    marginHorizontal: 5, // Add horizontal margin to add space between items
+    marginHorizontal: 5,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
   },
   columnWrapper: {
-    justifyContent: 'space-between', // Add spacing between columns
+    justifyContent: 'space-between',
   },
   noteTitle: {
     fontSize: 16,
