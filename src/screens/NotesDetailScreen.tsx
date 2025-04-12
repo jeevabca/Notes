@@ -31,7 +31,7 @@ const NotesDetailScreen = () => {
                 placeholder="Title"
                 placeholderTextColor="gray"
                 cursorColor="black"
-                style={{ height: 80, fontSize: 20, fontWeight: '300', backgroundColor: 'white' }}
+                style={{ height: 80, fontSize: 20, fontWeight: 'bold', backgroundColor: 'white' }}
               />
               <TextInput
                 value={value}

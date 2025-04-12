@@ -89,6 +89,13 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('Notes.keystore')
+            storePassword 'Notes2025!@#'
+            keyAlias 'Notes'
+            keyPassword 'Notes2025!@#' 
+        }
+
     }
     buildTypes {
         debug {
